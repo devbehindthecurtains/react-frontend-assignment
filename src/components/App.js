@@ -1,26 +1,39 @@
-import React from 'react';
-import api from '../lib/api';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
+import "./App.css";
+import React from "react";
 
-const fetchData = async () => {
-  const result = await api.getUsersDiff();
-  console.log(result);
-};
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 
+import { HistoryContainer } from "./history-container/HistoryContainer";
+
+/**
+ * Created custom theme for overriding ui material default values
+ */
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#196cad" }, // Had to darken the given blue color to get enough contrast
+    error: { main: "#d8372a" } // Had to darken given red color to get enough contrast
+  },
+  typography: {
+    fontSize: 12
+  }
+});
+
+/**
+ * In real life project we would need to decide things like
+ * routing, translations, localizations, offline support, SEO, code splitting etc...
+ * For this exercise though, we just ignore them
+ */
 export const App = () => {
   return (
-    <Container className="app" fixed>
-      <Box data-testid="app-box" m={2}>
-        <Typography>Your app should show up here.</Typography>
-        {/* Just a dummy fetcher to show how the api should be used, this should be removed */}
-        <Button variant="contained" color="primary" onClick={fetchData}>
-          Test data fetch
-        </Button>
-      </Box>
-    </Container>
+    <ThemeProvider key="data-testid-theme-provider" theme={theme}>
+      <Container data-testid="app-container" className="app">
+        <Box data-testid="app-box" className="app-box" m={2}>
+          <HistoryContainer data-testid="history-container" />
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 };
 
